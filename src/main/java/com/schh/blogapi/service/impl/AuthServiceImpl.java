@@ -7,6 +7,7 @@ import com.schh.blogapi.payload.LoginDto;
 import com.schh.blogapi.payload.RegisterDto;
 import com.schh.blogapi.repository.RoleRepository;
 import com.schh.blogapi.repository.UserRepository;
+import com.schh.blogapi.security.JwtTokenProvider;
 import com.schh.blogapi.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +30,16 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
     private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -47,7 +50,8 @@ public class AuthServiceImpl implements AuthService {
                 loginDto.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User login successfully";
+
+        return jwtTokenProvider.generateToken(authentication);
     } catch (BadCredentialsException e) {
         log.error("Bad credentials for username/email: {}", loginDto.getUsernameOrEmail());
         throw e;

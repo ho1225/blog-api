@@ -1,5 +1,6 @@
 package com.schh.blogapi.controller;
 
+import com.schh.blogapi.payload.JWTAuthResponse;
 import com.schh.blogapi.payload.LoginDto;
 import com.schh.blogapi.payload.RegisterDto;
 import com.schh.blogapi.service.AuthService;
@@ -21,9 +22,11 @@ public class AuthController {
 
 
     @PostMapping(value = {"/login", "/signin"})
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-           String response = authService.login(loginDto);
-           return ResponseEntity.ok(response);
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
+        String token = authService.login(loginDto);
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 
     @PostMapping(value = {"register", "signup"})
