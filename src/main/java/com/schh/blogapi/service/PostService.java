@@ -3,6 +3,8 @@ package com.schh.blogapi.service;
 import com.schh.blogapi.payload.PostDto;
 import com.schh.blogapi.payload.PostResponse;
 
+import java.util.List;
+
 
 public interface PostService {
 
@@ -16,4 +18,5 @@ public interface PostService {
 
     void deletePostById(Long id);
 
+    List<PostDto> getPostsByCategoryId(Long categoryId);
 }
