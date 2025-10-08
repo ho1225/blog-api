@@ -2,7 +2,6 @@ package com.schh.blogapi.controller;
 
 
 import com.schh.blogapi.payload.PostDto;
-import com.schh.blogapi.payload.PostDtoV2;
 import com.schh.blogapi.payload.PostResponse;
 import com.schh.blogapi.service.PostService;
 import com.schh.blogapi.utils.AppConstant;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -89,21 +87,21 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
-    @GetMapping("/api/v2/posts/{id}")
-    public ResponseEntity<PostDtoV2> getPostV2(@PathVariable(name = "id") Long id) {
-        PostDto postDto = postService.getPostById(id);
-        PostDtoV2 postDtoV2 = new PostDtoV2();
-        postDtoV2.setId(postDto.getId());
-        postDtoV2.setTitle(postDto.getTitle());
-        postDtoV2.setDescription(postDto.getDescription());
-        postDtoV2.setContent(postDto.getContent());
-        List<String> tags = new ArrayList<>();
-        tags.add("Java");
-        tags.add("Spring Boot");
-        tags.add("AWS");
-        postDtoV2.setTags(tags);
-        return ResponseEntity.ok(postDtoV2);
-    }
+//    @GetMapping("/api/v2/posts/{id}")
+//    public ResponseEntity<PostDtoV2> getPostV2(@PathVariable(name = "id") Long id) {
+//        PostDto postDto = postService.getPostById(id);
+//        PostDtoV2 postDtoV2 = new PostDtoV2();
+//        postDtoV2.setId(postDto.getId());
+//        postDtoV2.setTitle(postDto.getTitle());
+//        postDtoV2.setDescription(postDto.getDescription());
+//        postDtoV2.setContent(postDto.getContent());
+//        List<String> tags = new ArrayList<>();
+//        tags.add("Java");
+//        tags.add("Spring Boot");
+//        tags.add("AWS");
+//        postDtoV2.setTags(tags);
+//        return ResponseEntity.ok(postDtoV2);
+//    }
 
     @Operation(
             summary = "Update Post By ID REST API",
