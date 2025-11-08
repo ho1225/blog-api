@@ -1,9 +1,13 @@
 package com.schh.blogapi;
 
+import com.schh.blogapi.entity.Role;
+import com.schh.blogapi.repository.RoleRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +24,7 @@ import org.springframework.context.annotation.Bean;
                 )
         )
 )
-public class BlogApiApplication {
+public class BlogApiApplication implements CommandLineRunner {
 
     @Bean
     public ModelMapper modelMapper() {
@@ -29,6 +33,24 @@ public class BlogApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BlogApiApplication.class, args);
+    }
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
+        if (!roleRepository.existsByName("ROLE_ADMIN")) {
+            Role adminRole = new Role();
+            adminRole.setName("ROLE_ADMIN");
+            roleRepository.save(adminRole);
+        }
+
+        if (!roleRepository.existsByName("ROLE_USER")) {
+            Role userRole = new Role();
+            userRole.setName("ROLE_USER");
+            roleRepository.save(userRole);
+        }
     }
 
 }
